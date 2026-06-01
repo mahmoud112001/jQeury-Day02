@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Assignment 1 - jQuery Login Modal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    text-align: center;
+    padding-top: 80px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  #open-login {
+    background: #4a90d9;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  #open-login:hover {
+    background: #357abd;
+  }
+
+  #welcome-msg {
+    margin-top: 20px;
+    font-size: 18px;
+    color: green;
+    font-weight: bold;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="password"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .form-group input:focus {
+    border-color: #4a90d9;
+    outline: none;
+  }
+
+  .remember-row {
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  #login-dialog { display: none; }
+</style>
+</head>
+<body>
+
+<h1>Assignment 1 - Login Modal</h1>
+<button id="open-login">Open Login</button>
+<div id="welcome-msg"></div>
+
+<div id="login-dialog" title="Login">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter username">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter password">
+  </div>
+  <div class="remember-row">
+    <input type="checkbox" id="remember">
+    <label for="remember">Remember me</label>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script>
+$(function () {
+
+  $("#login-dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    width: 340,
+    resizable: false,
+    draggable: false,
+    closeOnEscape: true,
+    buttons: {
+      "Login": function () {
+        var user = $.trim($("#username").val());
+        if (!user) {
+          $("#username").focus().css("border-color", "red");
+          return;
+        }
+        $("#welcome-msg").text("Welcome, " + user + "!");
+        $(this).dialog("close");
+      },
+      "Cancel": function () {
+        $(this).dialog("close");
+      }
+    },
+    close: function () {
+      $("#username, #password").val("").css("border-color", "#ccc");
+      $("#remember").prop("checked", false);
+    }
+  });
+
+  $("#open-login").on("click", function () {
+    $("#login-dialog").dialog("open");
+  });
+
+});
+</script>
+</body>
+</html>
