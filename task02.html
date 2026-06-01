@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Assignment 2 - jQuery Drag & Drop</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  #stage {
+    position: relative;
+    width: 500px;
+    height: 320px;
+    background: #fff;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin: 0 auto;
+  }
+
+  #drop-zone {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    width: 110px;
+    height: 110px;
+    background: #d0e8ff;
+    border: 2px dashed #4a90d9;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #4a90d9;
+    text-align: center;
+  }
+
+  #drop-zone.ui-droppable-hover {
+    background: #b8d9ff;
+    border-color: #2277cc;
+  }
+
+  #drop-zone.dropped {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #28a745;
+  }
+
+  #drag-img {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    width: 80px;
+    height: 80px;
+    background: #4a90d9;
+    border-radius: 50%;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  #status {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #28a745;
+    min-height: 20px;
+  }
+
+  #reset-btn {
+    margin-top: 12px;
+    padding: 6px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #fff;
+    color: #555;
+  }
+
+  #reset-btn:hover {
+    background: #f0f0f0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Assignment 2 - Drag &amp; Drop</h1>
+<p>Drag the blue ball onto the dashed box. It snaps back if dropped elsewhere.</p>
+
+<div id="stage">
+  <div id="drag-img">&#128309;</div>
+  <div id="drop-zone">DROP<br>HERE</div>
+</div>
+
+<div id="status"></div>
+<button id="reset-btn">Reset</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script>
+$(function () {
+
+  var origPos = { top: 30, left: 40 };
+
+  $("#drag-img").draggable({
+    revert: "invalid",
+    zIndex: 10,
+    opacity: 0.8
+  });
+
+  $("#drop-zone").droppable({
+    accept: "#drag-img",
+    hoverClass: "ui-droppable-hover",
+    drop: function (event, ui) {
+      $(this).addClass("dropped");
+      $("#status").text("Ball dropped successfully!");
+    },
+    out: function () {
+      $(this).removeClass("dropped");
+    }
+  });
+
+  $("#reset-btn").on("click", function () {
+    $("#drag-img").animate({ top: origPos.top, left: origPos.left }, 300);
+    $("#drop-zone").removeClass("dropped");
+    $("#status").text("Reset.");
+  });
+
+});
+</script>
+</body>
+</html>
